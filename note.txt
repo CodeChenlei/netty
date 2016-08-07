@@ -1,0 +1,31 @@
+AbstractNioByteChannel NioByteUnsafe.read() // 有数据读的时候建立的channel
+AbstractNioMessageChannel NioMessageUnsafe.read()// 有连接进来的时候创建的channel,
+
+Unsafe 与底层nio交互相关的类
+Channel 里面包着Unsafe内部类
+AbstractChannel 里面包着AbstractUnsafe内部类
+
+
+
+ChannelOutboundBuffer 缓存所有的写请求
+
+
+
+// 最底层相关的三个点,包括接受连接,写,读
+NioServerSocketChannel.doReadMessages() 和最底层接受连接直接相关
+
+
+
+
+UnpooledUnsafeDirectByteBuf.setBytes() 和最自层写直接相关
+
+NioSocketChannel.doWrite():287 是真正的写
+
+
+一个channel一个Unsafe, 一个pipeline,一个 localAddress,一个 remoteAddress, 一个 eventLoop
+channel所有和底层相关的操作都交给底层的Unsafe来做
+
+
+HeadContext 里面的Unsafe就是channel里面的unsafe
+
+一个ChannelPipeline 里面必然会有一个TailContext和一个HeadContext,以及一个channel

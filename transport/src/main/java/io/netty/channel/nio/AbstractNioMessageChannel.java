@@ -15,11 +15,7 @@
  */
 package io.netty.channel.nio;
 
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelConfig;
-import io.netty.channel.ChannelOutboundBuffer;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.ServerChannel;
+import io.netty.channel.*;
 
 import java.io.IOException;
 import java.net.PortUnreachableException;
@@ -65,7 +61,10 @@ public abstract class AbstractNioMessageChannel extends AbstractNioChannel {
             Throwable exception = null;
             try {
                 try {
-                    for (;;) {
+                    for (; ; ) {
+                        /**
+                         * 接入一个客户端,接入一个客户端就创建一个NioSocketChannel放入readBuf这个list中
+                         */
                         int localRead = doReadMessages(readBuf);
                         if (localRead == 0) {
                             break;
@@ -89,7 +88,10 @@ public abstract class AbstractNioMessageChannel extends AbstractNioChannel {
                 }
                 setReadPending(false);
                 int size = readBuf.size();
-                for (int i = 0; i < size; i ++) {
+                /**
+                 * 这里最终会调用到{@link io.netty.bootstrap.ServerBootstrap.ServerBootstrapAcceptor#channelRead(ChannelHandlerContext, Object)}
+                 */
+                for (int i = 0; i < size; i++) {
                     pipeline.fireChannelRead(readBuf.get(i));
                 }
 
@@ -130,7 +132,7 @@ public abstract class AbstractNioMessageChannel extends AbstractNioChannel {
         final SelectionKey key = selectionKey();
         final int interestOps = key.interestOps();
 
-        for (;;) {
+        for (; ; ) {
             Object msg = in.current();
             if (msg == null) {
                 // Wrote all messages.
