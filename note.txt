@@ -15,8 +15,6 @@ ChannelOutboundBuffer 缓存所有的写请求
 NioServerSocketChannel.doReadMessages() 和最底层接受连接直接相关
 
 
-
-
 UnpooledUnsafeDirectByteBuf.setBytes() 和最自层写直接相关
 
 NioSocketChannel.doWrite():287 是真正的写
@@ -29,3 +27,25 @@ channel所有和底层相关的操作都交给底层的Unsafe来做
 HeadContext 里面的Unsafe就是channel里面的unsafe
 
 一个ChannelPipeline 里面必然会有一个TailContext和一个HeadContext,以及一个channel
+
+NioEventLoop 里面的run方法是一直在后台允许的方法,执行IO任务和非IO任务
+NioEventLoop 继承SingleThreadEventLoop
+
+AbstractNioChannel中的doRegister方法是底层的将channel注册到selector上去
+
+SingleThreadEventExecutor 在执行execute(task) 方法的时候会先判断当前线程是否在运行,如果当前线程在运行,就直接执行task,否则就先确保该线程已经起来,然后将任务加到该线程的队列中去
+
+
+NioServerSocketChannel中的doReadMessages方法会在底层的accept之后,new 一个NioSocketChannel丢到消息列表中
+最终pipeline传递到第一个个channelHandler,而其中一个特殊的ChannelHandler为ServerBootstrapAcceptor,ServerBootstrapAcceptor会将新创建的
+NioSocketChannel注册到eventLoop上去
+
+
+
+ServerBootstrapAcceptor 中的read方法已经拿到创建好的SocketChannel,然后调用childGroup.register(child), 会将该channel注册到某一个EventLoop上去
+这里选择哪一个EventLoop是由EventExecutorChooser中的next来决定
+
+EventExecutorChooser有两个类PowerOfTwoEventExecutorChooser和GenericEventExecutorChooser, 这里其实每次调用next都是下一个
+
+与jdk相关的write代码在ByteBuf 的public abstract int getBytes(int index, GatheringByteChannel out, int length) throws IOException;方法
+

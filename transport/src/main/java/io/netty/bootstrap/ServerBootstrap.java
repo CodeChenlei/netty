@@ -135,6 +135,13 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
         return childGroup;
     }
 
+    /**
+     * 设置options,attr, 以及给该pipeline加上一个ServerBootstrapAcceptor,
+     * 之后每次触发的read事件都是接收到新的客户端的连接,给 {@link ServerBootstrapAcceptor#channelRead(ChannelHandlerContext, Object)}
+     * 去处理
+     * @param channel
+     * @throws Exception
+     */
     @Override
     void init(Channel channel) throws Exception {
         final Map<ChannelOption<?>, Object> options = options();

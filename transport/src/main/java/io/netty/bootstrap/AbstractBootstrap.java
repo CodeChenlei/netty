@@ -16,16 +16,7 @@
 
 package io.netty.bootstrap;
 
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelException;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.ChannelPromise;
-import io.netty.channel.DefaultChannelPromise;
-import io.netty.channel.EventLoop;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.GlobalEventExecutor;
@@ -41,7 +32,7 @@ import java.util.Map;
 /**
  * {@link AbstractBootstrap} is a helper class that makes it easy to bootstrap a {@link Channel}. It support
  * method-chaining to provide an easy way to configure the {@link AbstractBootstrap}.
- *
+ * <p/>
  * <p>When not used in a {@link ServerBootstrap} context, the {@link #bind()} methods are useful for connectionless
  * transports such as datagram (UDP).</p>
  */
@@ -121,7 +112,6 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
 
     /**
      * The {@link SocketAddress} which is used to bind the local "end" to.
-     *
      */
     @SuppressWarnings("unchecked")
     public B localAddress(SocketAddress localAddress) {
@@ -304,8 +294,14 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
     }
 
     final ChannelFuture initAndRegister() {
+        /**
+         * ServerSocketChannel的pipeLine啥的都建立好了并且head,tail的ChannelHandlerContext已经有了
+         */
         final Channel channel = channelFactory().newChannel();
         try {
+            /**
+             * 在这个地方,加上
+             */
             init(channel);
         } catch (Throwable t) {
             channel.unsafe().closeForcibly();
@@ -313,6 +309,11 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
             return new DefaultChannelPromise(channel, GlobalEventExecutor.INSTANCE).setFailure(t);
         }
 
+        /**
+         * 给selector注册一个selectionKey,selectionKey为注册之后的返回
+         * selectionKey = javaChannel().register(eventLoop().selector, 0, this)
+         * 关心的为0
+         */
         ChannelFuture regFuture = group().register(channel);
         if (regFuture.cause() != null) {
             if (channel.isRegistered()) {
@@ -396,41 +397,41 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder()
-            .append(StringUtil.simpleClassName(this))
-            .append('(');
+                .append(StringUtil.simpleClassName(this))
+                .append('(');
         if (group != null) {
             buf.append("group: ")
-               .append(StringUtil.simpleClassName(group))
-               .append(", ");
+                    .append(StringUtil.simpleClassName(group))
+                    .append(", ");
         }
         if (channelFactory != null) {
             buf.append("channelFactory: ")
-               .append(channelFactory)
-               .append(", ");
+                    .append(channelFactory)
+                    .append(", ");
         }
         if (localAddress != null) {
             buf.append("localAddress: ")
-               .append(localAddress)
-               .append(", ");
+                    .append(localAddress)
+                    .append(", ");
         }
         synchronized (options) {
             if (!options.isEmpty()) {
                 buf.append("options: ")
-                   .append(options)
-                   .append(", ");
+                        .append(options)
+                        .append(", ");
             }
         }
         synchronized (attrs) {
             if (!attrs.isEmpty()) {
                 buf.append("attrs: ")
-                   .append(attrs)
-                   .append(", ");
+                        .append(attrs)
+                        .append(", ");
             }
         }
         if (handler != null) {
             buf.append("handler: ")
-               .append(handler)
-               .append(", ");
+                    .append(handler)
+                    .append(", ");
         }
         if (buf.charAt(buf.length() - 1) == '(') {
             buf.append(')');

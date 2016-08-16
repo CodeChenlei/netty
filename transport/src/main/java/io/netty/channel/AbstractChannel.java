@@ -410,6 +410,10 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
 
             AbstractChannel.this.eventLoop = eventLoop;
 
+            /**
+             * 表示当前eventLoop这个线程是否在跑,
+             * 如果为false,说明是别的线程调用了这里的函数
+             */
             if (eventLoop.inEventLoop()) {
                 register0(promise);
             } else {
@@ -439,6 +443,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
                     return;
                 }
                 boolean firstRegistration = neverRegistered;
+                // 将ServerSocketChannel注册到selector上, 并且用反射的方式将拿到jdk内部的selectionKeys
                 doRegister();
                 neverRegistered = false;
                 registered = true;
@@ -709,6 +714,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
             }
 
             try {
+                // 向selector注册读
                 doBeginRead();
             } catch (final Exception e) {
                 invokeLater(new OneTimeTask() {

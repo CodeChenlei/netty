@@ -120,6 +120,10 @@ public abstract class AbstractNioMessageChannel extends AbstractNioChannel {
                 // * The user called Channel.read() or ChannelHandlerContext.read() in channelReadComplete(...) method
                 //
                 // See https://github.com/netty/netty/issues/2254
+                /**
+                 * 默认情况下都是isAutoRead都是true,所以一般这里不会被执行
+                 * 而如果是非自动读的,并且当前没有在读,那就注销selector关心的事件
+                 */
                 if (!config.isAutoRead() && !isReadPending()) {
                     removeReadOp();
                 }

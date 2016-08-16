@@ -328,6 +328,11 @@ public abstract class AbstractNioChannel extends AbstractChannel {
         return loop instanceof NioEventLoop;
     }
 
+    /**
+     * 这里将NioServerSocketChannel注册到底层的selector上去, 一个死循环,直到注册成功为止
+     * @param this
+     * @throws Exception
+     */
     @Override
     protected void doRegister() throws Exception {
         boolean selected = false;
@@ -369,6 +374,9 @@ public abstract class AbstractNioChannel extends AbstractChannel {
 
         readPending = true;
 
+        /**
+         * 这里的readInterestOp 是在反射new NioServerSocketChannel 的时候创建的为ACCEPT
+         */
         final int interestOps = selectionKey.interestOps();
         if ((interestOps & readInterestOp) == 0) {
             selectionKey.interestOps(interestOps | readInterestOp);

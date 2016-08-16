@@ -1118,6 +1118,7 @@ final class DefaultChannelPipeline implements ChannelPipeline {
      * Should be called before {@link #fireChannelRegistered()} is called the first time.
      */
     void callHandlerAddedForAllHandlers() {
+        // 必须是被EventLoop来调用的
         // This should only called from within the EventLoop.
         assert channel.eventLoop().inEventLoop();
 

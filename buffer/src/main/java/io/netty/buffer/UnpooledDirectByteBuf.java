@@ -481,6 +481,15 @@ public class UnpooledDirectByteBuf extends AbstractReferenceCountedByteBuf {
         return getBytes(index, out, length, false);
     }
 
+    /**
+     * 与jdk底层相关的write代码
+     * @param index
+     * @param out
+     * @param length
+     * @param internal
+     * @return
+     * @throws IOException
+     */
     private int getBytes(int index, GatheringByteChannel out, int length, boolean internal) throws IOException {
         ensureAccessible();
         if (length == 0) {
