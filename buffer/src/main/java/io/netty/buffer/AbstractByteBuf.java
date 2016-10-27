@@ -36,6 +36,7 @@ import static io.netty.util.internal.MathUtil.isOutOfBounds;
 
 /**
  * A skeletal implementation of a buffer.
+ * 具体的读写字节交给子类去实现,因为direct和heap的实现不一样呐
  */
 public abstract class AbstractByteBuf extends ByteBuf {
     private static final InternalLogger logger = InternalLoggerFactory.getInstance(AbstractByteBuf.class);
@@ -298,6 +299,7 @@ public abstract class AbstractByteBuf extends ByteBuf {
         return 2;
     }
 
+
     private int calculateNewCapacity(int minNewCapacity) {
         final int maxCapacity = this.maxCapacity;
         final int threshold = 1048576 * 4; // 4 MiB page
@@ -309,6 +311,7 @@ public abstract class AbstractByteBuf extends ByteBuf {
         // If over threshold, do not double but just increase by threshold.
         if (minNewCapacity > threshold) {
             int newCapacity = minNewCapacity / threshold * threshold;
+            // 新空间与maxCapacity 的距离小于4M,就直接设置为maxCapacity, 否则直接加4M
             if (newCapacity > maxCapacity - threshold) {
                 newCapacity = maxCapacity;
             } else {
@@ -318,6 +321,7 @@ public abstract class AbstractByteBuf extends ByteBuf {
         }
 
         // Not over threshold. Double up to 4 MiB, starting from 64.
+        // 新空间小于4M, 那就直接从64B开始翻倍,直到大于minNewCapacity, 当然最后要取minNewCapacity和maxCapacity的最小值
         int newCapacity = 64;
         while (newCapacity < minNewCapacity) {
             newCapacity <<= 1;

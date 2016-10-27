@@ -1505,7 +1505,7 @@ public abstract class ByteBuf implements ReferenceCounted, Comparable<ByteBuf> {
     /**
      * Transfers the content of the specified stream to this buffer
      * starting at the current {@code writerIndex} and increases the
-     * {@code writerIndex} by the number of the transferred bytes.
+     * {@code writerIndex} by the number of the tranSferred bytes.
      *
      * @param length the number of bytes to transfer
      *

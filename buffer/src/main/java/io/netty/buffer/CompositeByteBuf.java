@@ -1251,6 +1251,7 @@ public class CompositeByteBuf extends AbstractReferenceCountedByteBuf implements
             ByteBuf s = c.buf;
             int adjustment = c.offset;
             int localLength = Math.min(length, s.capacity() - (index - adjustment));
+            // 这里有个迭代,递归加入ByteBuf
             switch (s.nioBufferCount()) {
                 case 0:
                     throw new UnsupportedOperationException();

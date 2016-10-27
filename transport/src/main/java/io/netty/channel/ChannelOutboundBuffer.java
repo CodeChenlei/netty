@@ -375,7 +375,10 @@ public final class ChannelOutboundBuffer {
     public ByteBuffer[] nioBuffers() {
         long nioBufferSize = 0;
         int nioBufferCount = 0;
+        // 拿到当前线程的threadLocalMap, 一个线程一个threadLocalMap, 数据载体默认为长度32的Object数组
+        // 一个FastThreadLocal一个index
         final InternalThreadLocalMap threadLocalMap = InternalThreadLocalMap.get();
+        // 每一个ThreadLocal都有个index, 对应ThreadLocalMap里面的数组下标
         ByteBuffer[] nioBuffers = NIO_BUFFERS.get(threadLocalMap);
         Entry entry = flushedEntry;
         while (isFlushedEntry(entry) && entry.msg instanceof ByteBuf) {

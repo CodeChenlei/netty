@@ -18,6 +18,8 @@ package io.netty.util.concurrent;
 import io.netty.util.internal.InternalThreadLocalMap;
 
 /**
+ * FastThreadLocalThread 里面存放了一个线程的所有的FastThreadLocal对象
+ *
  * A special {@link Thread} that provides fast access to {@link FastThreadLocal} variables.
  */
 public class FastThreadLocalThread extends Thread {

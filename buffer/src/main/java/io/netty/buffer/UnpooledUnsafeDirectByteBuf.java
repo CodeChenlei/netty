@@ -319,6 +319,7 @@ public class UnpooledUnsafeDirectByteBuf extends AbstractReferenceCountedByteBuf
         return getBytes(index, out, length, false);
     }
 
+    // getBytes 和 readBytes的区别是 getBytes 不改变原来的指针,而 readBytes 会移动position和limit指针
     private int getBytes(int index, GatheringByteChannel out, int length, boolean internal) throws IOException {
         ensureAccessible();
         if (length == 0) {

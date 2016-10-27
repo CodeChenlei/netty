@@ -23,6 +23,10 @@ import java.util.IdentityHashMap;
 import java.util.Set;
 
 /**
+ * 每new出来一个FastThreadLocal都会有一个唯一的序号index
+ * 假设线程是 {@link FastThreadLocalThread},每次从FastThreadLocal里面取对象的时候,都会先取出当前线程对应的 {@link InternalThreadLocalMap}
+ * 然后在该map里面根据index下标取出对应的对象
+ * 因此这里可以看到,如果多个线程操作同一个FastThreadLocal的话,每个线程都会有一个数组,其中的key为FastThreadLocal的索引index
  * A special variant of {@link ThreadLocal} that yields higher access performance when accessed from a
  * {@link FastThreadLocalThread}.
  * <p>
@@ -63,7 +67,7 @@ public class FastThreadLocal<V> {
                 Set<FastThreadLocal<?>> variablesToRemove = (Set<FastThreadLocal<?>>) v;
                 FastThreadLocal<?>[] variablesToRemoveArray =
                         variablesToRemove.toArray(new FastThreadLocal[variablesToRemove.size()]);
-                for (FastThreadLocal<?> tlv: variablesToRemoveArray) {
+                for (FastThreadLocal<?> tlv : variablesToRemoveArray) {
                     tlv.remove(threadLocalMap);
                 }
             }
@@ -200,6 +204,7 @@ public class FastThreadLocal<V> {
     public final boolean isSet(InternalThreadLocalMap threadLocalMap) {
         return threadLocalMap != null && threadLocalMap.isIndexedVariableSet(index);
     }
+
     /**
      * Sets the value to uninitialized; a proceeding call to get() will trigger a call to initialValue().
      */
@@ -240,5 +245,6 @@ public class FastThreadLocal<V> {
     /**
      * Invoked when this thread local variable is removed by {@link #remove()}.
      */
-    protected void onRemoval(@SuppressWarnings("UnusedParameters") V value) throws Exception { }
+    protected void onRemoval(@SuppressWarnings("UnusedParameters") V value) throws Exception {
+    }
 }
