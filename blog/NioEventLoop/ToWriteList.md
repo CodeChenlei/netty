@@ -13,3 +13,13 @@
 7. netty是如何使用到NioEventLoop这个类的
 
 8. netty中事件循环线程的设置
+
+9. netty创建一条SocketChannel的过程
+
+10. netty默认创建的2n+1条线程的名字是怎么确定的
+
+11. netty中对selector的处理,以及重建selector,jdk 空轮询列表 http://bugs.java.com/bugdatabase/view_bug.do?bug_id=2147719
+
+12. netty中的ThreadLocal
+
+13. netty中的FrameDecoder, 如何将字节流decode成业务对象，举例：DelimiterBasedFrameDecoder

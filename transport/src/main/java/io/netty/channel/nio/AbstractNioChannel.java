@@ -433,37 +433,6 @@ public abstract class AbstractNioChannel extends AbstractChannel {
     protected abstract void doFinishConnect() throws Exception;
 
     /**
-     * Returns an off-heap copy of the specified {@link ByteBuf}, and releases the original one.
-     * Note that this method does not create an off-heap copy if the allocation / deallocation cost is too high,
-     * but just returns the original {@link ByteBuf}..
-     */
-    protected final ByteBuf newDirectBuffer(ByteBuf buf) {
-        final int readableBytes = buf.readableBytes();
-        if (readableBytes == 0) {
-            ReferenceCountUtil.safeRelease(buf);
-            return Unpooled.EMPTY_BUFFER;
-        }
-
-        final ByteBufAllocator alloc = alloc();
-        if (alloc.isDirectBufferPooled()) {
-            ByteBuf directBuf = alloc.directBuffer(readableBytes);
-            directBuf.writeBytes(buf, buf.readerIndex(), readableBytes);
-            ReferenceCountUtil.safeRelease(buf);
-            return directBuf;
-        }
-
-        final ByteBuf directBuf = ByteBufUtil.threadLocalDirectBuffer();
-        if (directBuf != null) {
-            directBuf.writeBytes(buf, buf.readerIndex(), readableBytes);
-            ReferenceCountUtil.safeRelease(buf);
-            return directBuf;
-        }
-
-        // Allocating and deallocating an unpooled direct buffer is very expensive; give up.
-        return buf;
-    }
-
-    /**
      * Returns an off-heap copy of the specified {@link ByteBuf}, and releases the specified holder.
      * The caller must ensure that the holder releases the original {@link ByteBuf} when the holder is released by
      * this method.  Note that this method does not create an off-heap copy if the allocation / deallocation cost is
@@ -498,6 +467,37 @@ public abstract class AbstractNioChannel extends AbstractChannel {
             ReferenceCountUtil.safeRelease(holder);
         }
 
+        return buf;
+    }
+
+    /**
+     * Returns an off-heap copy of the specified {@link ByteBuf}, and releases the original one.
+     * Note that this method does not create an off-heap copy if the allocation / deallocation cost is too high,
+     * but just returns the original {@link ByteBuf}..
+     */
+    protected final ByteBuf newDirectBuffer(ByteBuf buf) {
+        final int readableBytes = buf.readableBytes();
+        if (readableBytes == 0) {
+            ReferenceCountUtil.safeRelease(buf);
+            return Unpooled.EMPTY_BUFFER;
+        }
+
+        final ByteBufAllocator alloc = alloc();
+        if (alloc.isDirectBufferPooled()) {
+            ByteBuf directBuf = alloc.directBuffer(readableBytes);
+            directBuf.writeBytes(buf, buf.readerIndex(), readableBytes);
+            ReferenceCountUtil.safeRelease(buf);
+            return directBuf;
+        }
+
+        final ByteBuf directBuf = ByteBufUtil.threadLocalDirectBuffer();
+        if (directBuf != null) {
+            directBuf.writeBytes(buf, buf.readerIndex(), readableBytes);
+            ReferenceCountUtil.safeRelease(buf);
+            return directBuf;
+        }
+
+        // Allocating and deallocating an unpooled direct buffer is very expensive; give up.
         return buf;
     }
 

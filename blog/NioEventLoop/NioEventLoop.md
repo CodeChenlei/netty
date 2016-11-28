@@ -55,8 +55,7 @@ netty的做法是关闭之前等待一段时间，如果这段时间内还有任
 
 ## EventLoopGroup
 事件循环组，继承自`EventExecutorGroup`说明TA有执行任务，管理任务，定时执行任务以及优雅关闭任务等功能，除了这些功能，TA还添加了如下功能
-一个事件循环组可以理解为一组线程，每个线程不停得轮训是否有IO事件或者有任务需要执行，一个事件循环`EventLoop`表示其中的一个线程
-- 返回一个事件循环组
+- 返回一个事件循环组，一个事件循环组可以理解为一组线程，每个线程不停得轮训是否有IO事件或者有任务需要执行，一个事件循环`EventLoop`表示其中的一个线程
 - 将一个`Channel`注册到该时间循环组上，`Channel`是netty里面的概念，是网络的抽象，后面`Channel`这一章节会详细分析
 
 典型代码片段
@@ -71,14 +70,6 @@ public interface EventLoopGroup extends EventExecutorGroup {
 ## EventLoop
 事件循环器，用于执行绑定在TA上面的`Channel`的IO操作，该接口方法只有一个，就是返回他所属的事件循环组
 
-以上就是`NioEventLoop`实现的所有的接口，我们总结一下`NioEventLoop`至少具有的功能
-- 提交任务执行
-- 定时执行任务
-- 管理任务，管理任务状态等等
-- 注册IO抽象`channel`,执行在该`channel`上的IO操作
-
-接下来，我们具体看和NioEventLoop相关的实现父类
-
 ## AbstractExecutorService
 该类实现了提交任务的功能，包括指定所有的，以及随意执行一个, 如下图，至于关闭执行器，判断是否关闭，以及等待关闭，具体执行任务，TA都没有具体实现
 但是TA提供了如何将一个`Runnable`包装成一个task的接口给子类，子类可以覆盖该方法,由于该类是jdk中的接口，所以不过多介绍
@@ -90,10 +81,23 @@ public interface EventLoopGroup extends EventExecutorGroup {
 ## AbstractScheduledEventExecutor
 支持定时执行任务的事件执行器
 
+## SingleThreadEventExecutor
+将所有的任务都丢到一个单线程中处理，定时任务也是在同一个线程中处理
+
+## SingleThreadEventLoop
+
+继承实现了 `EventLoop` 具有的功能，既然是事件循环，那么就应该具有事件循环标志的方法
+![image](images/1.png)
+
+可以看到，之所以叫事件循环，有标志性的函数，就是注册channel，那么后续的所有该channel的读写连接断开等事件，该事件循环期都可以检测到并且处理
 
 
-
-
+以上就是`NioEventLoop`实现的所有的接口以及父类，我们总结一下`NioEventLoop`至少具有的功能
+- 提交任务执行
+- 定时执行任务
+- 管理任务，管理任务状态等等
+- 注册IO抽象`channel`,执行在该`channel`上的IO操作
+- 多路复用轮训，传播事件
 
 
 
