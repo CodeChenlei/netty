@@ -102,25 +102,25 @@ public abstract class AbstractNioMessageChannel extends AbstractNioChannel {
                     pipeline.fireExceptionCaught(exception);
                 }
 
-                if (closed) {
-                    inputShutdown = true;
-                    if (isOpen()) {
-                        close(voidPromise());
-                    }
+            if (closed) {
+                inputShutdown = true;
+                if (isOpen()) {
+                    close(voidPromise());
                 }
-            } finally {
-                // Check if there is a readPending which was not processed yet.
-                // This could be for two reasons:
-                // * The user called Channel.read() or ChannelHandlerContext.read() in channelRead(...) method
-                // * The user called Channel.read() or ChannelHandlerContext.read() in channelReadComplete(...) method
-                //
-                // See https://github.com/netty/netty/issues/2254
-                if (!readPending && !config.isAutoRead()) {
-                    removeReadOp();
-                }
+            }
+        } finally {
+            // Check if there is a readPending which was not processed yet.
+            // This could be for two reasons:
+            // * The user called Channel.read() or ChannelHandlerContext.read() in channelRead(...) method
+            // * The user called Channel.read() or ChannelHandlerContext.read() in channelReadComplete(...) method
+            //
+            // See https://github.com/netty/netty/issues/2254
+            if (!readPending && !config.isAutoRead()) {
+                removeReadOp();
             }
         }
     }
+}
 
     @Override
     protected void doWrite(ChannelOutboundBuffer in) throws Exception {

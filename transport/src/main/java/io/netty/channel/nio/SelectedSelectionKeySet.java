@@ -84,6 +84,7 @@ final class SelectedSelectionKeySet extends AbstractSet<SelectionKey> {
         }
     }
 
+
     @Override
     public int size() {
         if (isA) {

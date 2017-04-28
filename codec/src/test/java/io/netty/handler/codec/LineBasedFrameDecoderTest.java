@@ -31,7 +31,8 @@ public class LineBasedFrameDecoderTest {
     public void testDecodeWithStrip() throws Exception {
         EmbeddedChannel ch = new EmbeddedChannel(new LineBasedFrameDecoder(8192, true, false));
 
-        ch.writeInbound(copiedBuffer("first\r\nsecond\nthird", CharsetUtil.US_ASCII));
+        ch.writeInbound(copiedBuffer("first", CharsetUtil.US_ASCII));
+        ch.writeInbound(copiedBuffer("\r\nsecond\nthird", CharsetUtil.US_ASCII));
         assertEquals("first", releaseLater((ByteBuf) ch.readInbound()).toString(CharsetUtil.US_ASCII));
         assertEquals("second", releaseLater((ByteBuf) ch.readInbound()).toString(CharsetUtil.US_ASCII));
         assertNull(ch.readInbound());

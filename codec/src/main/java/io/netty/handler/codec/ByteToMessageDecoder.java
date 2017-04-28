@@ -270,7 +270,7 @@ public abstract class ByteToMessageDecoder extends ChannelInboundHandlerAdapter 
         } else {
             ctx.fireChannelRead(msg);
         }
-    }
+}
 
     /**
      * Get {@code numElements} out of the {@link List} and forward these through the pipeline.

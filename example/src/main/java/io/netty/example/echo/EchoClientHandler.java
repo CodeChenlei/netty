@@ -17,10 +17,10 @@ package io.netty.example.echo;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.DefaultChannelPromise;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Handler implementation for the echo client.  It initiates the ping-pong
@@ -42,15 +42,18 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) {
-        final DefaultChannelPromise promise = new DefaultChannelPromise(ctx.channel(), ctx.executor());
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                promise.addListener(ChannelFutureListener.CLOSE);
+    public void channelActive(final ChannelHandlerContext ctx) throws InterruptedException {
+
+        while (true) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 1; i++) {
+                sb.append("ABC" + (byte) '\n' + "ABC" + (byte) '\n');
             }
-        }).start();
-        ctx.writeAndFlush(firstMessage, promise);
+
+            ctx.channel().writeAndFlush(Unpooled.wrappedBuffer(sb.toString().getBytes()));
+
+            TimeUnit.SECONDS.sleep(1);
+        }
     }
 
 //    @Override
