@@ -23,103 +23,103 @@ import io.netty.util.ByteProcessor;
  */
 public interface ByteBufProcessor extends ByteProcessor {
 
-    /**
-     * @deprecated Use {@link ByteProcessor#FIND_NUL}.
-     */
-    ByteBufProcessor FIND_NUL = new ByteBufProcessor() {
-        @Override
-        public boolean process(byte value) throws Exception {
-            return value != 0;
-        }
-    };
+	/**
+	 * @deprecated Use {@link ByteProcessor#FIND_NUL}.
+	 */
+	ByteBufProcessor FIND_NUL = new ByteBufProcessor() {
+		@Override
+		public boolean process(byte value) throws Exception {
+			return value != 0;
+		}
+	};
 
-    /**
-     * @deprecated Use {@link ByteProcessor#FIND_NON_NUL}.
-     */
-    ByteBufProcessor FIND_NON_NUL = new ByteBufProcessor() {
-        @Override
-        public boolean process(byte value) throws Exception {
-            return value == 0;
-        }
-    };
+	/**
+	 * @deprecated Use {@link ByteProcessor#FIND_NON_NUL}.
+	 */
+	ByteBufProcessor FIND_NON_NUL = new ByteBufProcessor() {
+		@Override
+		public boolean process(byte value) throws Exception {
+			return value == 0;
+		}
+	};
 
-    /**
-     * @deprecated Use {@link ByteProcessor#FIND_CR}.
-     */
-    ByteBufProcessor FIND_CR = new ByteBufProcessor() {
-        @Override
-        public boolean process(byte value) throws Exception {
-            return value != '\r';
-        }
-    };
+	/**
+	 * @deprecated Use {@link ByteProcessor#FIND_CR}.
+	 */
+	ByteBufProcessor FIND_CR = new ByteBufProcessor() {
+		@Override
+		public boolean process(byte value) throws Exception {
+			return value != '\r';
+		}
+	};
 
-    /**
-     * @deprecated Use {@link ByteProcessor#FIND_NON_CR}.
-     */
-    ByteBufProcessor FIND_NON_CR = new ByteBufProcessor() {
-        @Override
-        public boolean process(byte value) throws Exception {
-            return value == '\r';
-        }
-    };
+	/**
+	 * @deprecated Use {@link ByteProcessor#FIND_NON_CR}.
+	 */
+	ByteBufProcessor FIND_NON_CR = new ByteBufProcessor() {
+		@Override
+		public boolean process(byte value) throws Exception {
+			return value == '\r';
+		}
+	};
 
-    /**
-     * @deprecated Use {@link ByteProcessor#FIND_LF}.
-     */
-    ByteBufProcessor FIND_LF = new ByteBufProcessor() {
-        @Override
-        public boolean process(byte value) throws Exception {
-            return value != '\n';
-        }
-    };
+	/**
+	 * @deprecated Use {@link ByteProcessor#FIND_LF}.
+	 */
+	ByteBufProcessor FIND_LF = new ByteBufProcessor() {
+		@Override
+		public boolean process(byte value) throws Exception {
+			return value != '\n';
+		}
+	};
 
-    /**
-     * @deprecated Use {@link ByteProcessor#FIND_NON_LF}.
-     */
-    ByteBufProcessor FIND_NON_LF = new ByteBufProcessor() {
-        @Override
-        public boolean process(byte value) throws Exception {
-            return value == '\n';
-        }
-    };
+	/**
+	 * @deprecated Use {@link ByteProcessor#FIND_NON_LF}.
+	 */
+	ByteBufProcessor FIND_NON_LF = new ByteBufProcessor() {
+		@Override
+		public boolean process(byte value) throws Exception {
+			return value == '\n';
+		}
+	};
 
-    /**
-     * @deprecated Use {@link ByteProcessor#FIND_CRLF}.
-     */
-    ByteBufProcessor FIND_CRLF = new ByteBufProcessor() {
-        @Override
-        public boolean process(byte value) throws Exception {
-            return value != '\r' && value != '\n';
-        }
-    };
+	/**
+	 * @deprecated Use {@link ByteProcessor#FIND_CRLF}.
+	 */
+	ByteBufProcessor FIND_CRLF = new ByteBufProcessor() {
+		@Override
+		public boolean process(byte value) throws Exception {
+			return value != '\r' && value != '\n';
+		}
+	};
 
-    /**
-     * @deprecated Use {@link ByteProcessor#FIND_NON_CRLF}.
-     */
-    ByteBufProcessor FIND_NON_CRLF = new ByteBufProcessor() {
-        @Override
-        public boolean process(byte value) throws Exception {
-            return value == '\r' || value == '\n';
-        }
-    };
+	/**
+	 * @deprecated Use {@link ByteProcessor#FIND_NON_CRLF}.
+	 */
+	ByteBufProcessor FIND_NON_CRLF = new ByteBufProcessor() {
+		@Override
+		public boolean process(byte value) throws Exception {
+			return value == '\r' || value == '\n';
+		}
+	};
 
-    /**
-     * @deprecated Use {@link ByteProcessor#FIND_LINEAR_WHITESPACE}.
-     */
-    ByteBufProcessor FIND_LINEAR_WHITESPACE = new ByteBufProcessor() {
-        @Override
-        public boolean process(byte value) throws Exception {
-            return value != ' ' && value != '\t';
-        }
-    };
+	/**
+	 * @deprecated Use {@link ByteProcessor#FIND_LINEAR_WHITESPACE}.
+	 */
+	ByteBufProcessor FIND_LINEAR_WHITESPACE = new ByteBufProcessor() {
+		@Override
+		public boolean process(byte value) throws Exception {
+			return value != ' ' && value != '\t';
+		}
+	};
 
-    /**
-     * @deprecated Use {@link ByteProcessor#FIND_NON_LINEAR_WHITESPACE}.
-     */
-    ByteBufProcessor FIND_NON_LINEAR_WHITESPACE = new ByteBufProcessor() {
-        @Override
-        public boolean process(byte value) throws Exception {
-            return value == ' ' || value == '\t';
-        }
-    };
+	/**
+	 * @deprecated Use {@link ByteProcessor#FIND_NON_LINEAR_WHITESPACE}.
+	 */
+	ByteBufProcessor FIND_NON_LINEAR_WHITESPACE = new ByteBufProcessor() {
+		@Override
+		public boolean process(byte value) throws Exception {
+			return value == ' ' || value == '\t';
+		}
+	};
 }

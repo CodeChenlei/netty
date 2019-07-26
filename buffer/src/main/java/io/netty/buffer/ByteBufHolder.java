@@ -22,30 +22,30 @@ import io.netty.util.ReferenceCounted;
  */
 public interface ByteBufHolder extends ReferenceCounted {
 
-    /**
-     * Return the data which is held by this {@link ByteBufHolder}.
-     */
-    ByteBuf content();
+	/**
+	 * Return the data which is held by this {@link ByteBufHolder}.
+	 */
+	ByteBuf content();
 
-    /**
-     * Create a deep copy of this {@link ByteBufHolder}.
-     */
-    ByteBufHolder copy();
+	/**
+	 * Create a deep copy of this {@link ByteBufHolder}.
+	 */
+	ByteBufHolder copy();
 
-    /**
-     * Duplicate the {@link ByteBufHolder}. Be aware that this will not automatically call {@link #retain()}.
-     */
-    ByteBufHolder duplicate();
+	/**
+	 * Duplicate the {@link ByteBufHolder}. Be aware that this will not automatically call {@link #retain()}.
+	 */
+	ByteBufHolder duplicate();
 
-    @Override
-    ByteBufHolder retain();
+	@Override
+	ByteBufHolder retain();
 
-    @Override
-    ByteBufHolder retain(int increment);
+	@Override
+	ByteBufHolder retain(int increment);
 
-    @Override
-    ByteBufHolder touch();
+	@Override
+	ByteBufHolder touch();
 
-    @Override
-    ByteBufHolder touch(Object hint);
+	@Override
+	ByteBufHolder touch(Object hint);
 }
