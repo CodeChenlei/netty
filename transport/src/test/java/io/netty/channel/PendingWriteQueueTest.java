@@ -287,8 +287,8 @@ public class PendingWriteQueueTest {
         assertTrue(promise2.isSuccess());
         assertTrue(channel.finish());
 
-        assertEquals(1L, channel.readOutbound());
-        assertEquals(2L, channel.readOutbound());
+        assertEquals(1L, (long) channel.readOutbound());
+        assertEquals(2L, (long) channel.readOutbound());
         assertNull(channel.readOutbound());
         assertNull(channel.readInbound());
     }

@@ -29,7 +29,7 @@ public class HostsFileParserTest {
 
     @Test
     public void testParse() throws IOException {
-        String hostsString = new StringBuilder()
+        String hostsString = new StringBuilder(16)
                 .append("127.0.0.1 host1").append("\n") // single hostname, separated with blanks
                 .append("\n") // empty line
                 .append("192.168.0.1\thost2").append("\n") // single hostname, separated with tabs
