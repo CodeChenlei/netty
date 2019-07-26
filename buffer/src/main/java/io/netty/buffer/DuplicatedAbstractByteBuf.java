@@ -20,61 +20,61 @@ package io.netty.buffer;
  * is of type {@link AbstractByteBuf}.
  */
 final class DuplicatedAbstractByteBuf extends DuplicatedByteBuf {
-    public DuplicatedAbstractByteBuf(AbstractByteBuf buffer) {
-        super(buffer);
-    }
+	public DuplicatedAbstractByteBuf(AbstractByteBuf buffer) {
+		super(buffer);
+	}
 
-    @Override
-    protected byte _getByte(int index) {
-        return unwrap0()._getByte(index);
-    }
+	@Override
+	protected byte _getByte(int index) {
+		return unwrap0()._getByte(index);
+	}
 
-    @Override
-    protected short _getShort(int index) {
-        return unwrap0()._getShort(index);
-    }
+	@Override
+	protected short _getShort(int index) {
+		return unwrap0()._getShort(index);
+	}
 
-    @Override
-    protected int _getUnsignedMedium(int index) {
-        return unwrap0()._getUnsignedMedium(index);
-    }
+	@Override
+	protected int _getUnsignedMedium(int index) {
+		return unwrap0()._getUnsignedMedium(index);
+	}
 
-    @Override
-    protected int _getInt(int index) {
-        return unwrap0()._getInt(index);
-    }
+	@Override
+	protected int _getInt(int index) {
+		return unwrap0()._getInt(index);
+	}
 
-    @Override
-    protected long _getLong(int index) {
-        return unwrap0()._getLong(index);
-    }
+	@Override
+	protected long _getLong(int index) {
+		return unwrap0()._getLong(index);
+	}
 
-    @Override
-    protected void _setByte(int index, int value) {
-        unwrap0()._setByte(index, value);
-    }
+	@Override
+	protected void _setByte(int index, int value) {
+		unwrap0()._setByte(index, value);
+	}
 
-    @Override
-    protected void _setShort(int index, int value) {
-        unwrap0()._setShort(index, value);
-    }
+	@Override
+	protected void _setShort(int index, int value) {
+		unwrap0()._setShort(index, value);
+	}
 
-    @Override
-    protected void _setMedium(int index, int value) {
-        unwrap0()._setMedium(index, value);
-    }
+	@Override
+	protected void _setMedium(int index, int value) {
+		unwrap0()._setMedium(index, value);
+	}
 
-    @Override
-    protected void _setInt(int index, int value) {
-        unwrap0()._setInt(index, value);
-    }
+	@Override
+	protected void _setInt(int index, int value) {
+		unwrap0()._setInt(index, value);
+	}
 
-    @Override
-    protected void _setLong(int index, long value) {
-        unwrap0()._setLong(index, value);
-    }
+	@Override
+	protected void _setLong(int index, long value) {
+		unwrap0()._setLong(index, value);
+	}
 
-    private AbstractByteBuf unwrap0() {
-        return (AbstractByteBuf) unwrap();
-    }
+	private AbstractByteBuf unwrap0() {
+		return (AbstractByteBuf) unwrap();
+	}
 }

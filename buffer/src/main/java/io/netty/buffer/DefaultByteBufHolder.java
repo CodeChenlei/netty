@@ -24,82 +24,82 @@ import io.netty.util.internal.StringUtil;
  */
 public class DefaultByteBufHolder implements ByteBufHolder {
 
-    private final ByteBuf data;
+	private final ByteBuf data;
 
-    public DefaultByteBufHolder(ByteBuf data) {
-        if (data == null) {
-            throw new NullPointerException("data");
-        }
-        this.data = data;
-    }
+	public DefaultByteBufHolder(ByteBuf data) {
+		if (data == null) {
+			throw new NullPointerException("data");
+		}
+		this.data = data;
+	}
 
-    @Override
-    public ByteBuf content() {
-        if (data.refCnt() <= 0) {
-            throw new IllegalReferenceCountException(data.refCnt());
-        }
-        return data;
-    }
+	@Override
+	public ByteBuf content() {
+		if (data.refCnt() <= 0) {
+			throw new IllegalReferenceCountException(data.refCnt());
+		}
+		return data;
+	}
 
-    @Override
-    public ByteBufHolder copy() {
-        return new DefaultByteBufHolder(data.copy());
-    }
+	@Override
+	public ByteBufHolder copy() {
+		return new DefaultByteBufHolder(data.copy());
+	}
 
-    @Override
-    public ByteBufHolder duplicate() {
-        return new DefaultByteBufHolder(data.duplicate());
-    }
+	@Override
+	public ByteBufHolder duplicate() {
+		return new DefaultByteBufHolder(data.duplicate());
+	}
 
-    @Override
-    public int refCnt() {
-        return data.refCnt();
-    }
+	@Override
+	public int refCnt() {
+		return data.refCnt();
+	}
 
-    @Override
-    public ByteBufHolder retain() {
-        data.retain();
-        return this;
-    }
+	@Override
+	public ByteBufHolder retain() {
+		data.retain();
+		return this;
+	}
 
-    @Override
-    public ByteBufHolder retain(int increment) {
-        data.retain(increment);
-        return this;
-    }
+	@Override
+	public ByteBufHolder retain(int increment) {
+		data.retain(increment);
+		return this;
+	}
 
-    @Override
-    public ByteBufHolder touch() {
-        data.touch();
-        return this;
-    }
+	@Override
+	public ByteBufHolder touch() {
+		data.touch();
+		return this;
+	}
 
-    @Override
-    public ByteBufHolder touch(Object hint) {
-        data.touch(hint);
-        return this;
-    }
+	@Override
+	public ByteBufHolder touch(Object hint) {
+		data.touch(hint);
+		return this;
+	}
 
-    @Override
-    public boolean release() {
-        return data.release();
-    }
+	@Override
+	public boolean release() {
+		return data.release();
+	}
 
-    @Override
-    public boolean release(int decrement) {
-        return data.release(decrement);
-    }
+	@Override
+	public boolean release(int decrement) {
+		return data.release(decrement);
+	}
 
-    /**
-     * Return {@link ByteBuf#toString()} without checking the reference count first. This is useful to implemement
-     * {@link #toString()}.
-     */
-    protected final String contentToString() {
-        return data.toString();
-    }
+	/**
+	 * Return {@link ByteBuf#toString()} without checking the reference count first. This is useful to implemement
+	 * {@link #toString()}.
+	 */
+	protected final String contentToString() {
+		return data.toString();
+	}
 
-    @Override
-    public String toString() {
-        return StringUtil.simpleClassName(this) + '(' + contentToString() + ')';
-    }
+	@Override
+	public String toString() {
+		return StringUtil.simpleClassName(this) + '(' + contentToString() + ')';
+	}
 }
