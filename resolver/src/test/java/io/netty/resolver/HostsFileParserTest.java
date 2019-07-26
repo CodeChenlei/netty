@@ -23,31 +23,30 @@ import java.io.StringReader;
 import java.net.InetAddress;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class HostsFileParserTest {
 
-    @Test
-    public void testParse() throws IOException {
-        String hostsString = new StringBuilder(16)
-                .append("127.0.0.1 host1").append("\n") // single hostname, separated with blanks
-                .append("\n") // empty line
-                .append("192.168.0.1\thost2").append("\n") // single hostname, separated with tabs
-                .append("#comment").append("\n") // comment at the beginning of the line
-                .append(" #comment  ").append("\n") // comment in the middle of the line
-                .append("192.168.0.2  host3  #comment").append("\n") // comment after hostname
-                .append("192.168.0.3  host4  host5 host6").append("\n") // multiple aliases
-                .append("192.168.0.4  host4").append("\n") // host mapped to a second address, must be ignored
-                .toString();
+	@Test
+	public void testParse() throws IOException {
+		String hostsString = "127.0.0.1 host1" + "\n" // single hostname, separated with blanks
+				+ "\n" // empty line
+				+ "192.168.0.1\thost2" + "\n" // single hostname, separated with tabs
+				+ "#comment" + "\n" // comment at the beginning of the line
+				+ " #comment  " + "\n" // comment in the middle of the line
+				+ "192.168.0.2  host3  #comment" + "\n" // comment after hostname
+				+ "192.168.0.3  host4  host5 host6" + "\n" // multiple aliases
+				+ "192.168.0.4  host4" + "\n" // host mapped to a second address, must be ignored
+				;
 
-        Map<String, InetAddress> entries = HostsFileParser.parse(new BufferedReader(new StringReader(hostsString)));
+		Map<String, InetAddress> entries = HostsFileParser.parse(new BufferedReader(new StringReader(hostsString)));
 
-        assertEquals("Expected 6 entries", 6, entries.size());
-        assertEquals("127.0.0.1", entries.get("host1").getHostAddress());
-        assertEquals("192.168.0.1", entries.get("host2").getHostAddress());
-        assertEquals("192.168.0.2", entries.get("host3").getHostAddress());
-        assertEquals("192.168.0.3", entries.get("host4").getHostAddress());
-        assertEquals("192.168.0.3", entries.get("host5").getHostAddress());
-        assertEquals("192.168.0.3", entries.get("host6").getHostAddress());
-    }
+		assertEquals("Expected 6 entries", 6, entries.size());
+		assertEquals("127.0.0.1", entries.get("host1").getHostAddress());
+		assertEquals("192.168.0.1", entries.get("host2").getHostAddress());
+		assertEquals("192.168.0.2", entries.get("host3").getHostAddress());
+		assertEquals("192.168.0.3", entries.get("host4").getHostAddress());
+		assertEquals("192.168.0.3", entries.get("host5").getHostAddress());
+		assertEquals("192.168.0.3", entries.get("host6").getHostAddress());
+	}
 }
